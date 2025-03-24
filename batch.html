@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시간대별 배치 작업 실행 프레젠테이션</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F5F5F5; /* 실버 그레이 */
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #FFFFFF; /* 화이트 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            color: #0F2C59; /* 네이비 블루 */
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .section-title {
+            color: #0F2C59; /* 네이비 블루 */
+            font-size: 24px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #0F2C59; /* 네이비 블루 */
+            padding-bottom: 10px;
+        }
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+            margin-top: 20px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 40px;
+            width: 2px;
+            background-color: #0F2C59; /* 네이비 블루 */
+        }
+        .timeline-item {
+            margin-bottom: 20px;
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+        }
+        .timeline-item-time {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 120px;
+            text-align: left;
+            color: #333;
+            font-size: 16px;
+            font-weight: bold;
+            padding-left: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .timeline-item-time::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 40px;
+            width: 8px;
+            height: 8px;
+            background-color: #0F2C59;
+            border-radius: 50%;
+            transform: translateY(-50%);
+        }
+        .timeline-item-time::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 44px;
+            width: 2px;
+            height: 2px;
+            background-color: #0F2C59;
+            transform: translateY(-50%);
+        }
+        .timeline-item-content {
+            margin-left: 140px;
+            padding: 15px;
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #E0E0E0;
+            flex: 1;
+            margin-top: -30px;
+            margin-bottom: 20px;
+        }
+        .timeline-item-content h2 {
+            color: #0F2C59;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .timeline-item-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .timeline-item-content li {
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .key-takeaways {
+            background-color: #F0F4F8; /* 연한 하늘색 */
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border: 1px solid #D0D8E4;
+        }
+        .key-takeaways h2 {
+            color: #0F2C59;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        .key-takeaways ul {
+            list-style: disc;
+            padding-left: 20px;
+            margin: 0;
+        }
+        .key-takeaways li {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        @media screen and (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+            .timeline-item-time {
+                width: 100px;
+            }
+            .timeline-item-content {
+                margin-left: 140px;
+            }
+        }
+        @media screen and (max-width: 600px) {
+            .timeline-item-time {
+                position: relative;
+                left: 0;
+                text-align: left;
+                margin-bottom: 5px;
+                font-size: 14px;
+                font-weight: normal;
+                padding-right: 0;
+                padding-left: 0;
+                align-items: flex-start;
+            }
+            .timeline-item-time::after,
+            .timeline-item-time::before {
+                display: none;
+            }
+            .timeline-item-content {
+                margin-left: 0;
+                margin-right: 0;
+                padding: 10px;
+            }
+            .timeline::before {
+                left: 10px;
+            }
+            .timeline-item {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>시간대별 배치 작업 실행 프레젠테이션</h1>
+
+        <div class="section">
+            <h2 class="section-title">배치 작업 개요</h2>
+            <p>
+                본 프레젠테이션은 시간대별로 실행되는 배치 작업의 종류와 실행 시점을 명확히 제시하여, 시스템 운영의 투명성과 효율성을 향상시키기 위해 작성되었습니다.
+                각 작업의 목적과 실행 주기를 상세히 기술하여 시스템 관리자가 전체적인 흐름을 파악하고, 문제 발생 시 신속하게 대처할 수 있도록 지원합니다.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">시간대별 배치 작업 타임라인</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-item-time">실시간 (1분마다)</div>
+                    <div class="timeline-item-content">
+                        <h2>실시간 작업</h2>
+                        <ul>
+                            <li>나이스 데이터에 승인 요청 및 현금전환 주기적 요청</li>
+                            <li>출금 신청된 데이터를 펌뱅킹 이용하여 송금</li>
+                            <li>FirmBanking Agent 작업 내역 시스템에 업데이트</li>
+                            <li>신규 주선사 혜택, 오더 미배차 시 특정 시간 동안 오더 재접수</li>
+                            <li>전자세금계산서 실행</li>
+                            <li>가상계좌 미수신 내역 확인</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-item-time">매 시간 정각</div>
+                    <div class="timeline-item-content">
+                        <h2>매 시간 작업</h2>
+                        <ul>
+                            <li>오케이 요금제 회원 + 적재물 보험 가입자, 전날 배차 화물을 두레정보시스템으로 전송</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-item-time">00:00 (자정)</div>
+                    <div class="timeline-item-content">
+                        <h2>자정 작업</h2>
+                        <ul>
+                            <li>DriverDailyCount(), VMoneyDailyBalance(), MoveOrderHistory(), MoveOrderStatusChange(), SaveOneCallTimeAttendanceEventData() 실행</li>
+                            <li>사업자등록 상태조회 API 실행</li>
+                            <li>마일리지 지급</li>
+                            <li>Oracle Schedule Job 실행 (RESET_ORDER_OPERATEDATE, RESET_REGISTRY_DATE, DELETE_ORDER_PUSH_LOG, GENERATE_MEMBCOUNT, GENERATE_MEMBCOUNT_V2, UPDATE_DRIVER_STATUSCHANGE, UPDATE_DRIVER_PRICING_PLAN, update_cardorder_approval_date, Push Log 테이블 삭제)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-item-time">01:00</div>
+                    <div class="timeline-item-content">
+                        <h2>01:00 작업</h2>
+                        <ul>
+                            <li>펌뱅킹 업무 개시</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-item-time">03:00</div>
+                    <div class="timeline-item-content">
+                        <h2>03:00 작업</h2>
+                        <ul>
+                            <li>차주 회비 면제 내역 처리</li>
+                            <li>실시간 오더검색 적립금 부족 SMS 발송</li>
+                            <li>실시간 오더검색 자동 결제</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-item-time">04:00</div>
+                    <div class="timeline-item-content">
+                        <h2>04:00 작업</h2>
+                        <ul>
+                         <li>MYSQL BACKUP (C:\Backup\Backup.bat)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-item-time">09:00</div>
+                    <div class="timeline-item-content">
+                        <h2>09:00 작업</h2>
+                        <ul>
+                            <li>원콜 화물운송료 카드결제 - 회원 데이터 수신</li>
+                            <li>원콜 정보이용료 카드결제 - 회원 데이터 수신</li>
+                            <li>원콜 정보이용료 자동 인출</li>
+                            <li>원콜 운송비 적립금 자동 결제</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-item-time">10:00</div>
+                    <div class="timeline-item-content">
+                        <h2>10:00 작업</h2>
+                        <ul>
+                            <li>원콜 정보이용료 미납자 SMS 전송</li>
+                            <li>원콜 기타 SMS 전송</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-item-time">11:00, 11:10, 11:20, 11:30</div>
+                    <div class="timeline-item-content">
+                        <h2>11시 작업</h2>
+                        <ul>
+                            <li>CMS_계좌결과 (CMS_계좌결과.ps1) (~/api/cmsjob/mem/result)</li>
+                            <li>CMS_계좌신청 (CMS_계좌신청.ps1) (~/api/cmsjob/mem/request)</li>
+                            <li>CMS_출금결과 (CMS_출금결과.ps1) (~/api/cmsjob/pay/result)</li>
+                             <li>CMS_출금신청 (CMS_출금신청.ps1) (~/api/cmsjob/pay/request)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-item-time">13:00</div>
+                    <div class="timeline-item-content">
+                        <h2>13:00 작업</h2>
+                        <ul>
+                            <li>원콜 화물운송료 카드결제 - 자동결제 데이터 생성</li>
+                            <li>원콜 비서 설정 알림 푸쉬</li>
+                             <li>CMS_증빙신청 (CMS_증빙신청.ps1) (~/api/cmsjob/cer/request)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-item-time">14:00</div>
+                    <div class="timeline-item-content">
+                        <h2>14:00 작업</h2>
+                        <ul>
+                         <li>오케이 요금제 정산 (매월 3일 14시에만 동작)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-item-time">15:00 부터 20:00 까지</div>
+                    <div class="timeline-item-content">
+                        <h2>15:00 - 20:00 작업</h2>
+                        <ul>
+                            <li>정보이용료 미납안내 푸시 일괄 전송</li>
+                            <li>원콜 화물운송료 카드결제 - 매입결과 수신</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-item-time">17:00</div>
+                    <div class="timeline-item-content">
+                        <h2>17:00 작업</h2>
+                        <ul>
+                         <li>원콜 회비 전자세금계산서 일괄 전자발행 (매월 8일 17시에만 동작)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-item-time">21:00</div>
+                    <div class="timeline-item-content">
+                        <h2>21:00 작업</h2>
+                        <ul>
+                            <li>원콜 주선사 원콜타임 미배차 보상 마일리지 적립 (이벤트 기간: 2025-03-10 ~ 2025-03-28)</li>
+                             <li>원콜 정보이용료 카드결제 - 매입결과 수신</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-item-time">23:00, 23:10</div>
+                    <div class="timeline-item-content">
+                        <h2>23:00 작업</h2>
+                        <ul>
+                            <li>탈퇴 회원 중 적재물 보험 가입자 탈퇴 처리</li>
+                            <li>이벤트 적립금 소멸</li>
+                             <li>CMS_변경해지 (CMS_변경해지.ps1) (~/api/cmsjob/mem/state)</li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="timeline-item">
+                    <div class="timeline-item-time">9시, 11시, 13시, 15시, 17시, 19시</div>
+                    <div class="timeline-item-content">
+                        <h2>특정 시간 작업</h2>
+                        <ul>
+                            <li>원콜 정보이용료 미납자 SMS 전송</li>
+                            <li>원콜 기타 SMS 전송</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">핵심 내용 정리</h2>
+            <div class="key-takeaways">
+                <ul>
+                    <li>다양한 시간대에 걸쳐 배치 작업이 실행되며, 시스템 운영에 필수적인 기능들을 수행합니다.</li>
+                    <li>실시간 처리, 정기 결제, 데이터 동기화, 알림 발송 등 다양한 목적의 작업들이 자동화되어 있습니다.</li>
+                    <li>각 작업의 실행 시간과 내용을 명확히 파악하여 시스템 관리 효율성을 높일 수 있습니다.</li>
+                    <li>문제 발생 시 타임라인을 참조하여 원인을 신속하게 파악하고 대응할 수 있습니다.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
