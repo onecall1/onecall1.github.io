@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장바구니 로깅 통합 가이드</title>
+    <style>
+        :root {
+            --navy-blue: #0F2C59;
+            --white: #FFFFFF;
+            --silver-gray: #F5F5F5;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: var(--navy-blue);
+            color: var(--white);
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .header p {
+            margin: 10px 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .section {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: var(--navy-blue);
+            margin-top: 0;
+            border-bottom: 2px solid var(--navy-blue);
+            padding-bottom: 10px;
+        }
+
+        .code-block {
+            background-color: var(--silver-gray);
+            padding: 20px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+            font-family: 'Consolas', monospace;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: var(--navy-blue);
+            color: var(--white);
+        }
+
+        .table tr:nth-child(even) {
+            background-color: var(--silver-gray);
+        }
+
+        .footer {
+            background-color: var(--navy-blue);
+            color: var(--white);
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>장바구니 로깅 통합 가이드</h1>
+            <p>Cloud Functions를 활용한 비동기 장바구니 로깅 시스템</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>1. 개요</h2>
+            <p>본 문서는 .NET 4.5 C# 환경에서 Google Cloud Functions를 활용한 장바구니 로깅 시스템의 통합 방법을 설명합니다. 비동기 호출을 통해 기존 서비스의 성능에 영향을 최소화하면서 장바구니 관련 데이터를 안정적으로 로깅할 수 있습니다.</p>
+        </div>
+
+        <div class="section">
+            <h2>2. 시스템 요구사항</h2>
+            <ul>
+                <li>.NET Framework 4.5 이상</li>
+                <li>Visual Studio 2012 이상</li>
+                <li>인터넷 연결</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. API 엔드포인트 정보</h2>
+            <div class="code-block">
+                <pre>Endpoint: https://asia-northeast3-onecall-446605.cloudfunctions.net/log_cart_action
+Method: POST
+Content-Type: application/json</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. 요청 데이터 구조</h2>
+            <table class="table">
+                <tr>
+                    <th>필드명</th>
+                    <th>타입</th>
+                    <th>필수여부</th>
+                    <th>설명</th>
+                </tr>
+                <tr>
+                    <td>driver_seq</td>
+                    <td>number</td>
+                    <td>필수</td>
+                    <td>운전기사 시퀀스</td>
+                </tr>
+                <tr>
+                    <td>order_seq</td>
+                    <td>number</td>
+                    <td>필수</td>
+                    <td>주문 시퀀스</td>
+                </tr>
+                <tr>
+                    <td>over_limit_yn</td>
+                    <td>string</td>
+                    <td>필수</td>
+                    <td>장바구니 한도 초과 여부 (Y/N)</td>
+                </tr>
+                <tr>
+                    <td>cart_count</td>
+                    <td>number</td>
+                    <td>필수</td>
+                    <td>장바구니 상품 수량</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>5. C# 통합 샘플 코드</h2>
+            <div class="code-block">
+                <pre>using System;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+
+public class CartLoggingService
+{
+    private readonly HttpClient _httpClient;
+    private const string FUNCTION_URL = "https://asia-northeast3-onecall-446605.cloudfunctions.net/log_cart_action";
+
+    public CartLoggingService()
+    {
+        _httpClient = new HttpClient();
+    }
+
+    public async Task LogCartActionAsync(int driverSeq, int orderSeq, bool isOverLimit, int cartCount)
+    {
+        try
+        {
+            var requestData = new
+            {
+                driver_seq = driverSeq,
+                order_seq = orderSeq,
+                over_limit_yn = isOverLimit ? "Y" : "N",
+                cart_count = cartCount
+            };
+
+            var json = JsonConvert.SerializeObject(requestData);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            // 비동기로 요청 전송 (타임아웃 5초)
+            using (var cts = new CancellationTokenSource(5000))
+            {
+                var response = await _httpClient.PostAsync(FUNCTION_URL, content, cts.Token);
+                
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"장바구니 로깅 실패: {errorContent}");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // 로깅 실패 시에도 메인 프로세스는 계속 진행
+            // TODO: 실패 로그 저장 또는 모니터링 시스템 연동
+            System.Diagnostics.Debug.WriteLine($"장바구니 로깅 중 오류 발생: {ex.Message}");
+        }
+    }
+}
+
+// 사용 예시
+public class CartService
+{
+    private readonly CartLoggingService _loggingService;
+
+    public CartService()
+    {
+        _loggingService = new CartLoggingService();
+    }
+
+    public async Task AddToCartAsync(int driverSeq, int orderSeq, int cartCount)
+    {
+        // 장바구니 추가 로직
+        bool isOverLimit = cartCount > 5; // 예시: 5개 초과 시 한도 초과로 판단
+
+        // 비동기로 로깅 (메인 프로세스에 영향 없음)
+        _ = _loggingService.LogCartActionAsync(driverSeq, orderSeq, isOverLimit, cartCount);
+
+        // 장바구니 추가 계속 진행
+        // ... 기존 장바구니 추가 로직 ...
+    }
+}</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. 구현 시 고려사항</h2>
+            <div class="note">
+                <h3>성능 최적화</h3>
+                <ul>
+                    <li>HttpClient는 싱글톤으로 관리하여 연결 재사용</li>
+                    <li>요청 타임아웃을 5초로 설정하여 실패 시 빠른 복구</li>
+                    <li>비동기 호출 시 await를 사용하지 않아 메인 프로세스 블로킹 방지</li>
+                </ul>
+            </div>
+
+            <div class="note">
+                <h3>에러 처리</h3>
+                <ul>
+                    <li>로깅 실패 시에도 메인 프로세스는 계속 진행</li>
+                    <li>실패 로그는 별도 저장 또는 모니터링 시스템 연동 필요</li>
+                    <li>네트워크 오류, 타임아웃 등 다양한 예외 상황 고려</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>7. 테스트 방법</h2>
+            <div class="code-block">
+                <pre>// 단위 테스트 예시
+[TestMethod]
+public async Task TestCartLogging()
+{
+    var service = new CartLoggingService();
+    
+    // 정상 케이스 테스트
+    await service.LogCartActionAsync(12345, 6789, false, 3);
+    
+    // 한도 초과 케이스 테스트
+    await service.LogCartActionAsync(12345, 98765, true, 5);
+}</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>8. 모니터링 및 운영</h2>
+            <ul>
+                <li>Google Cloud Console에서 함수 실행 로그 확인 가능</li>
+                <li>실패율, 응답 시간 등 메트릭 모니터링</li>
+                <li>필요 시 알림 설정 가능</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p>© 2025 장바구니 로깅 시스템. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html> 
