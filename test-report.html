@@ -120,6 +120,27 @@
             color: var(--white);
             margin-top: 2rem;
         }
+
+        .validation-guide {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--navy-blue);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .validation-guide h3 {
+            color: var(--navy-blue);
+            margin-top: 0;
+        }
+
+        .validation-guide ul {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .validation-guide li {
+            margin: 0.5rem 0;
+        }
     </style>
 </head>
 <body>
@@ -133,7 +154,7 @@
             <h2>테스트 요약</h2>
             <div class="summary">
                 <div class="summary-item">
-                    <h3>5</h3>
+                    <h3>8</h3>
                     <p>총 테스트 케이스</p>
                 </div>
                 <div class="summary-item">
@@ -141,9 +162,48 @@
                     <p>성공 케이스</p>
                 </div>
                 <div class="summary-item">
-                    <h3>2</h3>
+                    <h3>5</h3>
                     <p>실패 케이스</p>
                 </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>테스터 가이드</h2>
+            <div class="validation-guide">
+                <h3>전화번호 벨리데이션 규칙</h3>
+                <ul>
+                    <li>길이: 10-11자리</li>
+                    <li>형식: 숫자만 허용</li>
+                    <li>시작: 010으로 시작</li>
+                </ul>
+            </div>
+            <div class="validation-guide">
+                <h3>테스트 시나리오</h3>
+                <ul>
+                    <li>기본 기능 테스트
+                        <ul>
+                            <li>새로운 전화번호로 신청</li>
+                            <li>중복 전화번호로 신청</li>
+                            <li>잘못된 형식의 전화번호로 신청</li>
+                        </ul>
+                    </li>
+                    <li>벨리데이션 테스트
+                        <ul>
+                            <li>9자리 이하 전화번호</li>
+                            <li>12자리 이상 전화번호</li>
+                            <li>숫자 외 문자 포함</li>
+                            <li>010으로 시작하지 않는 번호</li>
+                        </ul>
+                    </li>
+                    <li>에러 처리 테스트
+                        <ul>
+                            <li>전화번호 필드 누락</li>
+                            <li>잘못된 JSON 형식</li>
+                            <li>Content-Type 헤더 누락</li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
 
@@ -189,8 +249,29 @@
                         <td>이미 신청이 완료되었습니다</td>
                     </tr>
                     <tr>
-                        <td>잘못된 형식 테스트</td>
-                        <td>123</td>
+                        <td>잘못된 형식 테스트 (9자리)</td>
+                        <td>123456789</td>
+                        <td class="status-failure">실패</td>
+                        <td>400</td>
+                        <td>유효하지 않은 전화번호입니다</td>
+                    </tr>
+                    <tr>
+                        <td>잘못된 형식 테스트 (12자리)</td>
+                        <td>010123456789</td>
+                        <td class="status-failure">실패</td>
+                        <td>400</td>
+                        <td>유효하지 않은 전화번호입니다</td>
+                    </tr>
+                    <tr>
+                        <td>잘못된 형식 테스트 (문자 포함)</td>
+                        <td>0101234abcd</td>
+                        <td class="status-failure">실패</td>
+                        <td>400</td>
+                        <td>유효하지 않은 전화번호입니다</td>
+                    </tr>
+                    <tr>
+                        <td>잘못된 형식 테스트 (010 미시작)</td>
+                        <td>01112345678</td>
                         <td class="status-failure">실패</td>
                         <td>400</td>
                         <td>유효하지 않은 전화번호입니다</td>
