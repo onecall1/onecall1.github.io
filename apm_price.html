@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모니터링 솔루션 공급 견적서</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #ffffff;
+        }
+        .slide {
+            width: 1920px;
+            min-height: 1080px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            background-color: #ffffff;
+        }
+        .slide-content {
+            padding: 50px 80px;
+        }
+        .header {
+            margin-bottom: 40px;
+            position: relative;
+            text-align: center;
+        }
+        .title {
+            font-size: 58px;
+            font-weight: 700;
+            color: #0c4a6e;
+            margin-bottom: 15px;
+            animation: slideInFromTop 0.8s ease-out;
+        }
+        .subtitle {
+            font-size: 28px;
+            color: #64748b;
+            font-weight: 500;
+            animation: slideInFromTop 0.8s ease-out 0.2s both;
+        }
+        @keyframes slideInFromTop {
+            0% {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        @keyframes fadeInUp {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .quote-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+        .quote-card {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+            border: 2px solid #e2e8f0;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        .quote-card:nth-child(1) {
+            animation-delay: 0.3s;
+            animation-fill-mode: both;
+        }
+        .quote-card:nth-child(2) {
+            animation-delay: 0.5s;
+            animation-fill-mode: both;
+        }
+        .quote-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        .quote-header {
+            background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 100%);
+            color: white;
+            padding: 25px 35px;
+            position: relative;
+        }
+        .quote-header.maxy {
+            background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
+        }
+        .quote-header.jennifer {
+            background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 100%);
+        }
+        .solution-name {
+            font-size: 34px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .solution-type {
+            font-size: 22px;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+        .quote-body {
+            padding: 35px;
+        }
+        .quote-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .quote-table th,
+        .quote-table td {
+            padding: 18px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .quote-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: #334155;
+            font-size: 20px;
+        }
+        .quote-table td {
+            font-size: 22px;
+            color: #475569;
+        }
+        .quote-table .label {
+            font-weight: 500;
+            color: #64748b;
+            width: 40%;
+        }
+        .quote-table .value {
+            font-weight: 600;
+            color: #1e293b;
+            width: 60%;
+        }
+        .price-highlight {
+            font-size: 30px;
+            font-weight: 700;
+            color: #dc2626;
+        }
+        .company-highlight {
+            color: #0369a1;
+            font-weight: 600;
+        }
+        .summary-section {
+            background-color: #f8fafc;
+            border-radius: 20px;
+            padding: 35px 45px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 2px solid #e2e8f0;
+            animation: scaleIn 0.8s ease-out 0.7s both;
+        }
+        .summary-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #0c4a6e;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 25px;
+        }
+        .summary-item {
+            text-align: center;
+            background-color: white;
+            padding: 30px 20px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        .summary-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        .summary-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        .icon-mobile {
+            color: #7c3aed;
+        }
+        .icon-server {
+            color: #0369a1;
+        }
+        .icon-log {
+            color: #059669;
+        }
+        .summary-label {
+            font-size: 20px;
+            color: #64748b;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        .summary-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .total-summary {
+            background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 100%);
+            color: white;
+            padding: 22px 35px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .total-text {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+        .total-amount {
+            font-size: 38px;
+            font-weight: 700;
+        }
+        .quote-badge {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .contract-info {
+            background-color: #fef3c7;
+            border-left: 6px solid #f59e0b;
+            padding: 18px 22px;
+            margin-top: 18px;
+            border-radius: 0 12px 12px 0;
+        }
+        .contract-info-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 6px;
+        }
+        .contract-info-text {
+            font-size: 16px;
+            color: #451a03;
+            line-height: 1.4;
+        }
+        .maintenance-info {
+            background-color: #d1fae5;
+            border-left: 6px solid #059669;
+            padding: 18px 22px;
+            margin-top: 15px;
+            border-radius: 0 12px 12px 0;
+        }
+        .maintenance-info-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #047857;
+            margin-bottom: 6px;
+        }
+        .maintenance-info-text {
+            font-size: 16px;
+            color: #064e3b;
+            line-height: 1.4;
+        }
+        .highlight-keyword {
+            background: linear-gradient(120deg, #fbbf24 0%, #f59e0b 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="slide-content">
+            <div class="header">
+                <div class="title">
+                    <i class="fas fa-file-invoice-dollar" style="margin-right: 20px; color: #0369a1;"></i>
+                    모니터링 솔루션 공급 견적서
+                </div>
+                <div class="subtitle">MAXY & Jennifer Solution Quotation</div>
+            </div>
+            
+            <!-- Quote Cards -->
+            <div class="quote-container">
+                <!-- MAXY Quote Card -->
+                <div class="quote-card">
+                    <div class="quote-header maxy">
+                        <div class="quote-badge">모바일</div>
+                        <div class="solution-name">MAXY</div>
+                        <div class="solution-type">모바일 앱 모니터링 솔루션</div>
+                    </div>
+                    <div class="quote-body">
+                        <table class="quote-table">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">견적 상세</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="label">계약명</td>
+                                    <td class="value">원콜 MAXY 모바일 앱 모니터링 솔루션 공급</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">공급금액</td>
+                                    <td class="value price-highlight">70,000,000원</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">부가세</td>
+                                    <td class="value">별도</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">적용대상</td>
+                                    <td class="value">차주용 안드로이드 앱, 아이폰 앱</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="contract-info">
+                            <div class="contract-info-title">주요 기능</div>
+                            <div class="contract-info-text">실시간 앱 성능 모니터링, 크래시 분석, 사용자 경험 최적화, 다양한 OS/디바이스 환경 지원</div>
+                        </div>
+                        <div class="maintenance-info">
+                            <div class="maintenance-info-title">유지보수 안내</div>
+                            <div class="maintenance-info-text" style="font-size: 18px; font-weight: bold; text-decoration: none; font-style: normal; color: rgb(225, 83, 76); text-align: start;">납품 완료 후 1년 무상 유지보수 후 필요 시 유지보수 계약 별도 체결</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Jennifer Quote Card -->
+                <div class="quote-card">
+                    <div class="quote-header jennifer">
+                        <div class="quote-badge">서버</div>
+                        <div class="solution-name">Jennifer</div>
+                        <div class="solution-type">서버 모니터링 솔루션 (APM)</div>
+                    </div>
+                    <div class="quote-body">
+                        <table class="quote-table">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">견적 상세</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="label">계약명</td>
+                                    <td class="value">Jennifer APM 서버 모니터링 솔루션 공급</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">공급금액</td>
+                                    <td class="value price-highlight">60,000,000원</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">부가세</td>
+                                    <td class="value">별도</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">적용대상</td>
+                                    <td class="value">홈페이지 서버 1대, API 서버 4대 (총 80코어)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="contract-info">
+                            <div class="contract-info-title">특별 혜택</div>
+                            <div class="contract-info-text">표준가 대비 <span class="highlight-keyword">87.5% 할인</span> (4억 2천만원 → 6천만원), 국내 APM 시장 점유율 1위 솔루션</div>
+                        </div>
+                        <div class="maintenance-info">
+                            <div class="maintenance-info-title">유지보수 안내</div>
+                            <div class="maintenance-info-text" style="font-size: 16px; font-weight: bold; text-decoration: none; font-style: normal; color: rgb(225, 83, 76); text-align: start;">납품 완료 후 1년 무상 유지보수 후 필요 시 유지보수 계약 별도 체결</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Summary Section -->
+            <div class="summary-section">
+                <div class="summary-title">
+                    <i class="fas fa-calculator" style="margin-right: 15px;"></i>
+                    전체 도입 비용 요약
+                </div>
+                
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="summary-icon icon-mobile">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="summary-label">모바일 앱 모니터링</div>
+                        <div class="summary-value">7,000만원</div>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <div class="summary-icon icon-server">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="summary-label">서버 모니터링 (APM)</div>
+                        <div class="summary-value">6,000만원</div>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <div class="summary-icon icon-log">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="summary-label">로그수집 서버 (2대)</div>
+                        <div class="summary-value">1,000만원</div>
+                    </div>
+                </div>
+                
+                <div class="total-summary">
+                    <div class="total-text">총 도입 비용 (부가세 별도)</div>
+                    <div class="total-amount">140,000,000원</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
