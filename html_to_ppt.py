@@ -14,9 +14,9 @@ def html_to_ppt():
     # PPT 생성
     prs = Presentation()
     
-    # 슬라이드 크기를 1920x1080으로 설정 (16:9 비율)
-    prs.slide_width = Inches(13.33)  # 1920px
-    prs.slide_height = Inches(7.5)   # 1080px
+    # 슬라이드 크기를 A4 용지에 맞게 설정 (A4 비율: 210x297mm)
+    prs.slide_width = Inches(11.69)   # A4 가로 (297mm)
+    prs.slide_height = Inches(8.27)   # A4 세로 (210mm)
     
     # 빈 슬라이드 레이아웃 사용
     blank_slide_layout = prs.slide_layouts[6]
@@ -41,7 +41,8 @@ def html_to_ppt():
         
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
-            page = browser.new_page(viewport={'width': 1920, 'height': 1080})
+            # A4 비율에 맞는 뷰포트 설정 (1169x827 픽셀, A4 비율 유지)
+            page = browser.new_page(viewport={'width': 1169, 'height': 827})
             
             # HTML 파일 로드
             page.goto(file_url, wait_until='networkidle')
@@ -49,18 +50,61 @@ def html_to_ppt():
             # 폰트와 스타일 완전 로딩 대기
             page.wait_for_timeout(3000)
             
-            # 고품질 스크린샷 생성
+            # 페이지의 실제 높이 확인
+            page_height = page.evaluate("document.body.scrollHeight")
+            print(f"페이지 실제 높이: {page_height}px")
+            
+            # 뷰포트를 실제 페이지 높이에 맞게 조정 (A4 비율 유지)
+            if page_height > 827:
+                # A4 비율을 유지하면서 높이 조정
+                new_width = int(page_height * (1169/827))  # A4 비율 유지
+                page.set_viewport_size({'width': new_width, 'height': page_height})
+                page.wait_for_timeout(1000)  # 리사이즈 후 대기
+            
+            # 전체 페이지 스크린샷 생성
             temp_image = "temp_slide.png"
-            page.screenshot(path=temp_image, full_page=False)
+            page.screenshot(path=temp_image, full_page=True)
             browser.close()
         
-        # 이미지를 슬라이드에 삽입
-        slide.shapes.add_picture(temp_image, Inches(0), Inches(0), 
-                                width=prs.slide_width, height=prs.slide_height)
+        # 이미지를 슬라이드에 삽입 (비율 유지)
+        from PIL import Image
+        img = Image.open(temp_image)
+        img_width, img_height = img.size
+        img_ratio = img_width / img_height
+        img.close()  # PIL 이미지 객체 닫기
+        
+        # PPT 슬라이드 크기
+        slide_width = prs.slide_width
+        slide_height = prs.slide_height
+        slide_ratio = slide_width / slide_height
+        
+        print(f"이미지 크기: {img_width}x{img_height} (비율: {img_ratio:.2f})")
+        print(f"슬라이드 크기: {slide_width}x{slide_height} (비율: {slide_ratio:.2f})")
+        
+        # 비율을 유지하면서 슬라이드를 꽉 채우도록 크기 계산 (crop 방식)
+        if img_ratio > slide_ratio:
+            # 이미지가 더 넓음 - 높이를 슬라이드에 맞추고 좌우는 잘림
+            new_height = slide_height
+            new_width = int(slide_height * img_ratio)
+            left = (slide_width - new_width) // 2  # 중앙 정렬
+            top = 0
+        else:
+            # 이미지가 더 높음 - 너비를 슬라이드에 맞추고 상하는 잘림
+            new_width = slide_width
+            new_height = int(slide_width / img_ratio)
+            left = 0
+            top = (slide_height - new_height) // 2  # 중앙 정렬
+        
+        print(f"최적화된 크기: {new_width}x{new_height}, 위치: ({left}, {top})")
+        
+        slide.shapes.add_picture(temp_image, left, top, width=new_width, height=new_height)
         
         # 임시 이미지 파일 삭제
-        if os.path.exists(temp_image):
-            os.remove(temp_image)
+        try:
+            if os.path.exists(temp_image):
+                os.remove(temp_image)
+        except:
+            print(f"임시 파일 {temp_image} 삭제 실패 (무시됨)")
             
         print("HTML 스타일이 완벽하게 보존된 PPT 생성 완료")
         

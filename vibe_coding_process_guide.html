@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>바이브 코딩 프로세스 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+        }
+        .step-card {
+            background-color: white;
+            border-radius: 0.75rem; /* Tailwind rounded-xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Tailwind shadow-lg */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* Tailwind shadow-2xl */
+        }
+        .step-number {
+            background-color: #3b82f6; /* Tailwind blue-500 */
+            color: white;
+            border-radius: 9999px; /* Tailwind rounded-full */
+            width: 2.5rem; /* Tailwind w-10 */
+            height: 2.5rem; /* Tailwind h-10 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600; /* Tailwind semibold */
+            font-size: 1.125rem; /* Tailwind text-lg */
+        }
+        .code-block {
+            background-color: #1f2937; /* Tailwind gray-800 */
+            color: #d1d5db; /* Tailwind gray-300 */
+            padding: 1rem; /* Tailwind p-4 */
+            border-radius: 0.5rem; /* Tailwind rounded-lg */
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .prompt-block {
+            background-color: #f3f4f6; /* Tailwind gray-100 */
+            border: 1px solid #e5e7eb; /* Tailwind gray-200 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .prompt-block h3 {
+            color: #111827; /* Tailwind gray-900 */
+        }
+        .prompt-block pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #374151; /* Tailwind gray-700 */
+        }
+        .section-title {
+            font-size: 1.875rem; /* Tailwind text-3xl */
+            font-weight: 700; /* Tailwind bold */
+            color: #1e3a8a; /* Tailwind blue-800 */
+            margin-bottom: 1rem; /* Tailwind mb-4 */
+            padding-bottom: 0.5rem; /* Tailwind pb-2 */
+            border-bottom: 2px solid #3b82f6; /* Tailwind blue-500 */
+        }
+        .question-item {
+            background-color: #eef2ff; /* Tailwind indigo-50 */
+            padding: 0.75rem; /* Tailwind p-3 */
+            border-radius: 0.375rem; /* Tailwind rounded-md */
+            border-left: 4px solid #6366f1; /* Tailwind indigo-500 */
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-800">
+
+    <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-8 shadow-md">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl font-bold tracking-tight">바이브 코딩(Vibe Coding) 프로세스 가이드</h1>
+            <p class="mt-2 text-lg opacity-90">AI와 함께하는 체계적인 개발 워크플로우</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <div class="text-center mb-12">
+            <p class="text-xl text-gray-700 leading-relaxed max-w-3xl mx-auto">
+                "바이브 코딩"은 Jira 티켓 생성부터 AI를 활용한 개발 계획 수립, 코드 구현, 그리고 체계적인 문서화에 이르기까지
+                일관되고 효율적인 개발 흐름을 정의합니다. 이 가이드는 각 단계를 명확히 안내하여 개발 생산성과 협업의 질을 높이는 것을 목표로 합니다.
+            </p>
+        </div>
+
+        <div class="space-y-12">
+
+            <section class="step-card p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="step-number mr-4">1</div>
+                    <h2 class="text-2xl font-semibold text-blue-700">준비 단계: 티켓 및 브랜치 생성</h2>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-700 mb-1">Jira 티켓 생성</h3>
+                        <p class="text-gray-600">개발할 기능 또는 수정 사항에 대한 Jira 티켓을 생성합니다. 티켓에는 명확한 목표, 설명, 요구 사항을 포함해야 합니다.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-700 mb-1">Git 브랜치 생성</h3>
+                        <p class="text-gray-600">Jira 티켓 번호를 기반으로 Git 브랜치를 생성합니다. 브랜치 이름은 팀의 컨벤션을 따릅니다. 예시:</p>
+                        <div class="code-block mt-2">
+                            <pre><code>git checkout -b UBJB-2775-비즈니스포탈-중고차게시판-등록현황-list-조회-화면</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="step-card p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="step-number mr-4">2</div>
+                    <h2 class="text-2xl font-semibold text-blue-700">Cursor 프로젝트 설정</h2>
+                </div>
+                <p class="text-gray-600">AI 기반 코드 편집기인 Cursor에서 새로 생성한 Git 브랜치를 기준으로 프로젝트 폴더를 엽니다. 이를 통해 개발 환경과 AI 지원 기능을 해당 작업에 맞게 설정합니다.</p>
+            </section>
+
+            <section class="step-card p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="step-number mr-4">3</div>
+                    <h2 class="text-2xl font-semibold text-blue-700">Cursor 규칙 생성</h2>
+                </div>
+                <p class="text-gray-600">Cursor의 채팅창에 다음 명령어를 입력하여 프로젝트의 코딩 스타일 및 규칙을 AI가 학습하도록 합니다:</p>
+                <div class="code-block my-2">
+                    <pre><code>/Generate Cursor Rules</code></pre>
+                </div>
+                <p class="text-gray-600">이 과정은 프로젝트 소스 코드를 분석하여 일관성 있는 코드 생성을 위한 `rule` 파일을 생성합니다.</p>
+            </section>
+
+            <section class="step-card p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="step-number mr-4">4</div>
+                    <h2 class="text-2xl font-semibold text-blue-700">개발 계획서 요청 (Gemini 활용)</h2>
+                </div>
+                <p class="text-gray-600">Gemini와 같은 LLM에게 상세한 개발 계획서 작성을 요청합니다. 요청 시 프로젝트의 구조, 기술 스택, 아키텍처 패턴, 코딩 컨벤션, 프론트엔드 가이드 및 신규 화면 요구사항 등 구체적인 정보를 제공합니다.</p>
+                <p class="text-gray-600 mt-2 mb-1"><strong>요청 예시 프롬프트:</strong></p>
+                <div class="prompt-block text-sm">
+                    <h3># ONECALL.DATASTORE 프로젝트 구조 및 기술스택</h3>
+                    <pre>
+## 기술스택
+- **백엔드**: Java 17, Spring Boot 3.2.5, MyBatis, Lombok, Actuator, AOP, Validation, Micrometer/Prometheus, JWT, Excel(POI), Log4jdbc-log4j2, commons-lang3
+- **DB**: Oracle, MySQL, PostgreSQL
+- **프론트엔드**: Thymeleaf, DataTables, Flatpickr, Select2, SweetAlert2, SB Admin 2
+- **테스트/기타**: Spring Boot Starter Test, (주석처리) Redis
+
+## 주요 폴더/파일
+- `src/main/java/com/onecall/web/` : 서비스별 패키지(예: user, sales, admin 등), service, mapper, dto, WebadminApplication.java(메인)
+- `src/main/resources/` : 환경설정(application.yml 등), 템플릿(templates/), 정적리소스(static/), mybatis/
+- `src/test/` : 테스트코드
+- `pom.xml` : Maven 의존성/빌드
+
+## 참고
+- 서버사이드 렌더링(Thymeleaf), SPA 아님
+- 멀티 DB 지원, 모니터링 내장, JWT 인증, Excel 다운로드 등
+- CI: Bitbucket Pipelines 사용
+
+### 관련 파일
+- @pom.xml
+- @README.md
+- @src/main/java/com/onecall/web/WebadminApplication.java
+- @src/main/resources/application.yml
+
+# 아키텍처 패턴 및 코딩 컨벤션
+## 레이어드 아키텍처
+프로젝트는 전형적인 Spring Boot 레이어드 아키텍처를 따릅니다:
+### Controller Layer
+- `src/main/java/com/onecall/web/{domain}/controller/` - REST API 엔드포인트
+- Thymeleaf 뷰 반환 또는 JSON 응답
+- `@Controller` 또는 `@RestController` 사용
+- 예시: @AdminController.java
+### Service Layer
+- `src/main/java/com/onecall/web/{domain}/service/` - 비즈니스 로직
+- `@Service` 어노테이션 사용
+- 트랜잭션 관리 (`@Transactional`)
+### DTO Layer
+- `src/main/java/com/onecall/web/{domain}/dto/` - 데이터 전송 객체
+- Request/Response DTO 분리
+- Lombok 사용 (`@Data`, `@Builder`, `@NoArgsConstructor`, `@AllArgsConstructor`)
+### Mapper Layer (MyBatis)
+- `src/main/java/com/onecall/web/mapper/` - MyBatis 매퍼 인터페이스
+- `src/main/resources/mybatis/mapper/` - SQL 매퍼 XML
+- 멀티 DB 지원: `mysql/`, `oracle/`, `postgre/`
+
+## 공통 컴포넌트
+- `src/main/java/com/onecall/web/common/` - 공통 기능
+  - `config/` - Spring 설정 클래스
+  - `exception/` - 예외 처리
+  - `jwt/` - JWT 인증
+  - `utils/` - 유틸리티 클래스
+  - `constant/` - 상수 정의
+
+## 네이밍 컨벤션
+- 클래스명: PascalCase (예: `UserService`, `OrderController`)
+- 메서드명: camelCase (예: `getUserInfo`, `createOrder`)
+- 패키지명: lowercase (예: `com.onecall.web.admin`)
+- 상수: UPPER_SNAKE_CASE (예: `MAX_RETRY_COUNT`)
+
+## 어노테이션 사용
+- `@Slf4j` - 로깅 (Lombok)
+- `@RequiredArgsConstructor` - 생성자 주입 (Lombok)
+- `@Validated` - 입력값 검증
+- `@Transactional` - 트랜잭션 관리
+
+# 프론트엔드 패턴 및 Thymeleaf 가이드
+## 템플릿 엔진: Thymeleaf
+서버사이드 렌더링을 위해 Thymeleaf를 사용합니다.
+### 템플릿 구조
+```
+src/main/resources/templates/
+├── fragments/          # 공통 레이아웃
+│   └── layouts/        # 헤더, 푸터, 사이드바
+├── content/            # 페이지별 컨텐츠
+│   ├── admin/          # 관리자 페이지
+│   ├── home/           # 홈 페이지
+│   ├── order/          # 주문 관리
+│   └── ...
+├── error/              # 에러 페이지
+└── login.html          # 로그인 페이지
+```
+### 레이아웃 패턴
+- 기본 레이아웃: `fragments/layouts/`
+- 페이지별 컨텐츠: `content/{domain}/`
+- 팝업: `content/{domain}/popup/`
+
+## UI 프레임워크: SB Admin 2
+Bootstrap 기반의 SB Admin 2 테마를 사용합니다.
+### 정적 리소스 구조
+```
+src/main/resources/static/
+├── css/                # 커스텀 CSS
+├── js/                 # JavaScript 파일
+│   ├── common/         # 공통 유틸리티
+│   └── content/        # 페이지별 스크립트
+├── img/                # 이미지 파일
+└── vendor/             # 서드파티 라이브러리
+    ├── bootstrap/
+    ├── datatables/
+    ├── jquery/
+    └── ...
+```
+## 주요 JavaScript 라이브러리
+### DataTables 2.0.7
+- 테이블 데이터 표시 및 페이징
+- 검색, 정렬, 필터링 기능
+- 사용 위치: `vendor/datatables/`
+### Flatpickr
+- 날짜/시간 선택기
+- 다양한 날짜 형식 지원
+### Select2
+- 향상된 셀렉트 박스
+- 검색 가능한 드롭다운
+### SweetAlert2
+- 사용자 친화적인 알림창
+- 확인/취소 다이얼로그
+
+## Thymeleaf 사용 패턴
+### 기본 문법
+```html
+<span th:text="${user.name}">사용자명</span>
+
+<div th:if="${user.isAdmin}">관리자 메뉴</div>
+
+<tr th:each="item : ${itemList}">
+    <td th:text="${item.name}"></td>
+</tr>
+
+<form th:object="${userForm}" th:action="@{/user/save}" method="post">
+    <input th:field="*{name}" type="text" />
+</form>
+```
+### 레이아웃 상속
+```html
+<html xmlns:layout="[http://www.ultraq.net.nz/thymeleaf/layout](http://www.ultraq.net.nz/thymeleaf/layout)">
+<div layout:fragment="content">
+    </div>
+</html>
+```
+## 스타일 가이드
+- Bootstrap 4 클래스 활용
+- 반응형 디자인 적용
+- 커스텀 CSS는 `css/custom/` 디렉토리에 배치
+- JavaScript는 페이지별로 분리하여 관리
+
+## 참고 파일
+- 로그인 페이지: @login.html
+- 메인 페이지: @index.html
+=============================================================
+
+# ONECALL.DATASTORE - 신규 화면 개발
+화면명 : 중고차개시판
+내용 : 중고차개시판에 등록한 게시물들을 조회 하는 화면
+필요기능 : 조회,엑셀다운로드
+검색조건는 나중에 추가
+
+화면 위치 : #### 회원 관리 (member)
+- **위치**: `src/main/java/com/onecall/web/member/`
+- **기능**: 회원 가입, 정보 수정, 탈퇴
+- **구성**: controller, service, dto
+회원관리 에 추가
+회원관리의 MemberStatus 의 화면 구조를 참고해서 화면 구성
+
+데이터 베이스: 오라클
+테이블 스키마 :
+-- auto-generated definition
+create table FS_TRUCK_BOARD ( ... ) -- (스키마 전체 내용은 생략)
+/
+조회쿼리 : select board_seq, member_seq, ... from FS_TRUCK_BOARD;
+=============================================================
+AI 개발자를 위한 단계별 지침인 상세한 구현 계획을 마크다운(.md)으로 만들어 주세요
+-단계는 작고 구체적이어야 합니다.
+-코드는 없고, 명확하고 구체적인 지침만 있어야 합니다.
+                    </pre>
+                </div>
+            </section>
+
+            <section class="step-card p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="step-number mr-4">5</div>
+                    <h2 class="text-2xl font-semibold text-blue-700">개발 계획서 저장</h2>
+                </div>
+                <p class="text-gray-600">Gemini가 생성한 개발 계획서를 프로젝트 내에 `plan.md` (또는 `implementation-plan.md`) 파일로 저장합니다. 이 문서는 개발 진행의 기준점이 됩니다.</p>
+            </section>
+
+            <section class="step-card p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="step-number mr-4">6</div>
+                    <h2 class="text-2xl font-semibold text-blue-700">개발 계획서 검토 요청 (Cursor)</h2>
+                </div>
+                <p class="text-gray-600">Cursor 채팅창에 다음 명령어를 입력하여 AI가 저장된 개발 계획서(`implementation-plan.md` 또는 `plan.md`)의 명확성을 검토하고 추가 질문을 하도록 요청합니다:</p>
+                <div class="code-block my-2">
+                    <pre><code>/memory-bank 안의 모든 문서를 읽어보세요. implementation-plan.md가 명확한가요? 당신에게 100% 명확하게 만들기 위해 어떤 질문이 있나요?</code></pre>
+                </div>
+            </section>
+
+            <section class="step-card p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="step-number mr-4">7</div>
+                    <h2 class="text-2xl font-semibold text-blue-700">Cursor 질문 확인 및 답변</h2>
+                </div>
+                <p class="text-gray-600">Cursor가 개발 계획의 모호한 부분을 명확히 하기 위해 제시하는 질문들을 확인합니다. 예시 질문:</p>
+                <div class="space-y-3 mt-4">
+                    <div class="question-item">
+                        <p class="font-medium text-indigo-700">1. 데이터베이스 관련</p>
+                        <ul class="list-disc list-inside text-gray-600 ml-4">
+                            <li>FS_TRUCK_BOARD 테이블이 어떤 DB에 있나요? (Oracle/MySQL/PostgreSQL 중)</li>
+                            <li>기존 MemberStatus 화면이 어떤 DB를 사용하는지 확인이 필요합니다.</li>
+                        </ul>
+                    </div>
+                    <div class="question-item">
+                        <p class="font-medium text-indigo-700">2. 파일 경로 및 네이밍</p>
+                        <ul class="list-disc list-inside text-gray-600 ml-4">
+                            <li>MemberStatus 관련 파일들의 정확한 경로를 확인해야 합니다: Controller, Service, DTO, Mapper 파일명</li>
+                            <li>템플릿 파일 위치와 이름</li>
+                            <li>"중고차개시판"이 정확한 명칭인가요? (오타인지 확인 - "중고차게시판"이 맞는 것 같습니다)</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="text-gray-600 mt-4">이러한 질문에 대해 명확한 답변을 제공하여 AI가 개발 작업을 정확하게 이해하고 지원할 수 있도록 합니다.</p>
+            </section>
+
+            <section class="step-card p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="step-number mr-4">8</div>
+                    <h2 class="text-2xl font-semibold text-blue-700">답변 제공 및 최종 구현 지시 (Cursor)</h2>
+                </div>
+                <p class="text-gray-600">Cursor의 질문에 대한 답변을 제공한 후, 다음의 포괄적인 지시를 통해 실제 구현 및 문서화 작업을 진행하도록 합니다:</p>
+                <div class="code-block my-2 text-sm">
+                    <pre><code>/memory-bank/progress.md를 열어 단계별 진행해야할 내역을 체크박스리스트 형식으로 만들고, 각단계진행할때마다 체크박스 체크하면서 단계별 작업 내용 문서화 하세요.
+/memory-bank 안의 모든 문서를 읽고, 구현 계획의 1단계 부터 마지막 단계까지 진행하세요.
+그런 다음 각 파일이 어떤 역할을 하는지 설명하기 위해 architecture.md에 아키텍처 관련 통찰력을 추가하세요.</code></pre>
+                </div>
+                <p class="text-gray-600 mt-2">이 지시를 통해 Cursor는 다음 작업들을 수행합니다:</p>
+                <ul class="list-disc list-inside text-gray-600 space-y-1 mt-2 ml-4">
+                    <li>`progress.md` 파일에 개발 계획의 각 단계를 체크리스트로 만듭니다.</li>
+                    <li>계획에 따라 실제 코드 구현을 진행하며, 완료된 각 단계를 `progress.md`에 체크하고 관련 작업 내용을 문서화합니다.</li>
+                    <li>`/memory-bank` 내의 모든 관련 문서를 참고하여 컨텍스트를 유지합니다.</li>
+                    <li>구현이 완료되면, `architecture.md` 파일에 새롭게 추가/수정된 파일들의 역할과 아키텍처 관점에서의 변경 사항 및 통찰력을 기록합니다.</li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-gray-300 py-8 mt-16">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2024 Vibe Coding Process Guide. All rights reserved.</p>
+            <p class="text-sm mt-1">효율적인 개발 문화를 만들어갑니다.</p>
+        </div>
+    </footer>
+
+</body>
+</html> 
